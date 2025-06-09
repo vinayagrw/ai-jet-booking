@@ -38,6 +38,30 @@ export default function Navigation() {
               Memberships
             </Link>
             <Link
+              href="/booking"
+              className={`text-gray-700 hover:text-blue-600 ${
+                isActive('/booking') ? 'text-blue-600 font-semibold' : ''
+              }`}
+            >
+              My Bookings
+            </Link>
+            <Link
+              href="/ownership-shares"
+              className={`text-gray-700 hover:text-blue-600 ${
+                isActive('/ownership-shares') ? 'text-blue-600 font-semibold' : ''
+              }`}
+            >
+              Ownership
+            </Link>
+            <Link
+              href="/admin"
+              className={`text-gray-700 hover:text-blue-600 ${
+                isActive('/admin') ? 'text-blue-600 font-semibold' : ''
+              }`}
+            >
+              Admin
+            </Link>
+            <Link
               href="/about"
               className={`text-gray-700 hover:text-blue-600 ${
                 isActive('/about') ? 'text-blue-600 font-semibold' : ''
@@ -95,6 +119,27 @@ export default function Navigation() {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Memberships
+          </Link>
+          <Link
+            href="/booking"
+            className="block px-3 py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            My Bookings
+          </Link>
+          <Link
+            href="/ownership-shares"
+            className="block px-3 py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Ownership
+          </Link>
+          <Link
+            href="/admin"
+            className="block px-3 py-2 text-gray-700 hover:text-blue-600"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Admin
           </Link>
           <Link
             href="/about"

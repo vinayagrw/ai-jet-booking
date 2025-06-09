@@ -1,21 +1,13 @@
-import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import React from 'react';
 import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import Footer from '@/components/Footer';
 import { Providers } from '@/components/Providers';
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.isAdmin) {
-    redirect('/login?callbackUrl=/admin');
-  }
-
   return (
     <Providers>
       <div className="min-h-screen flex flex-col">

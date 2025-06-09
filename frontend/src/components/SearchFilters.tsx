@@ -43,6 +43,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             value={filters.category}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           >
             <option value="">All Categories</option>
             <option value="light">Light Jets</option>
@@ -64,6 +65,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             onChange={handleChange}
             placeholder="Enter location"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           />
         </div>
 
@@ -80,6 +82,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             placeholder="Number of passengers"
             min="1"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           />
         </div>
 
@@ -96,6 +99,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             placeholder="Minimum price"
             min="0"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           />
         </div>
 
@@ -112,6 +116,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             placeholder="Maximum price"
             min="0"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           />
         </div>
 
@@ -128,6 +133,7 @@ export default function SearchFilters({ onSearch }: SearchFiltersProps) {
             placeholder="Minimum range"
             min="0"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            suppressHydrationWarning
           />
         </div>
       </div>
