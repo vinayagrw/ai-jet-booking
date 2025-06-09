@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from passlib.context import CryptContext
 import logging
 from typing import Optional
+import traceback
+from jwt.exceptions import InvalidTokenError
 
 # Configure logger
 logger = logging.getLogger(__name__)
@@ -94,45 +96,36 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
         )
 
 @router.post("/register", response_model=schemas.Token)
-async def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    """Register a new user."""
+def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    logger.info(f"Registration attempt for email: {user.email}")
     try:
         # Check if user already exists
-        db_user = db.query(models.User).filter(models.User.email == user.email).first()
-        if db_user:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email already registered"
-            )
-
-        # Create new user
+        existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+        if existing_user:
+            logger.warning(f"Registration failed: Email already exists: {user.email}")
+            raise HTTPException(status_code=400, detail="Email already registered")
+        logger.info("Hashing password...")
         hashed_password = get_password_hash(user.password)
+        logger.info("Creating new user object...")
         db_user = models.User(
             email=user.email,
             name=user.name,
-            first_name=user.first_name,
-            last_name=user.last_name,
+            first_name=getattr(user, 'first_name', None),
+            last_name=getattr(user, 'last_name', None),
             password_hash=hashed_password,
-            role="user"  # Default role
+            role='user'
         )
         db.add(db_user)
         db.commit()
         db.refresh(db_user)
-
-        # Create access token
-        access_token = create_access_token(data={"sub": user.email})
-        
-        return {
-            "access_token": access_token,
-            "token_type": "bearer",
-            "user": db_user
-        }
+        logger.info(f"User created successfully: {db_user.email} (id: {db_user.id})")
+        access_token = create_access_token(data={"sub": db_user.email, "role": db_user.role, "id": str(db_user.id)})
+        logger.info(f"Access token created for user: {db_user.email}")
+        return {"access_token": access_token, "token_type": "bearer"}
     except Exception as e:
-        logger.error(f"Registration error: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred during registration"
-        )
+        logger.error(f"Registration error for email {user.email}: {str(e)}")
+        logger.error(traceback.format_exc())
+        raise HTTPException(status_code=500, detail="Internal server error during registration")
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> models.User:
     """Get the current user from the JWT token."""
@@ -142,24 +135,45 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
+        logger.info("Attempting to decode JWT token")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
         role: str = payload.get("role")
+        user_id: str = payload.get("id")
+        
         if email is None:
+            logger.error("Token missing 'sub' claim")
             raise credentials_exception
-    except jwt.JWTError:
-        raise credentials_exception
-
-    user = db.query(models.User).filter(models.User.email == email).first()
-    if user is None:
-        raise credentials_exception
+            
+        logger.info(f"Token decoded successfully for user: {email}")
         
-    # Verify that the user's role matches the token
-    if user.role != role:
-        logger.warning(f"Role mismatch for user {email}: token role {role} != db role {user.role}")
-        raise credentials_exception
+        user = db.query(models.User).filter(models.User.email == email).first()
+        if user is None:
+            logger.error(f"User not found in database: {email}")
+            raise credentials_exception
+            
+        # Verify that the user's role matches the token
+        if user.role != role:
+            logger.warning(f"Role mismatch for user {email}: token role {role} != db role {user.role}")
+            raise credentials_exception
+            
+        # Verify that the user's ID matches the token
+        if str(user.id) != user_id:
+            logger.warning(f"ID mismatch for user {email}: token id {user_id} != db id {user.id}")
+            raise credentials_exception
+            
+        logger.info(f"Successfully authenticated user: {email}")
+        return user
         
-    return user
+    except InvalidTokenError as e:
+        logger.error(f"Invalid JWT token: {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+    except Exception as e:
+        logger.error(f"Unexpected error during authentication: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred during authentication"
+        )
 
 def get_current_active_user(current_user: models.User = Depends(get_current_user)) -> models.User:
     """Get the current active user."""
@@ -167,9 +181,22 @@ def get_current_active_user(current_user: models.User = Depends(get_current_user
 
 def get_current_admin_user(current_user: models.User = Depends(get_current_user)) -> models.User:
     """Get the current admin user."""
-    if current_user.role != "admin":
+    try:
+        logger.info(f"Checking admin privileges for user: {current_user.email}")
+        if current_user.role != "admin":
+            logger.warning(f"Access denied: User {current_user.email} is not an admin")
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not enough permissions. Admin access required."
+            )
+        logger.info(f"Admin access granted for user: {current_user.email}")
+        return current_user
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error checking admin privileges: {str(e)}")
+        logger.error(f"Full traceback: {traceback.format_exc()}")
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not enough permissions"
-        )
-    return current_user 
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while checking admin privileges"
+        ) 

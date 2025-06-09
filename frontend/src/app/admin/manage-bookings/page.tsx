@@ -7,6 +7,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';  // API URL for backend requests
 
@@ -38,6 +39,7 @@ interface Booking {
  * @returns {JSX.Element} The manage bookings page UI.
  */
 const ManageBookingsPage: React.FC = () => {
+  const router = useRouter();
   // State variables to store the list of bookings, loading status, and any error messages.
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,8 +54,21 @@ const ManageBookingsPage: React.FC = () => {
     const fetchBookings = async () => {
       console.log('Admin: Attempting to fetch bookings.');
       try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('Admin: No authentication token found');
+          router.push('/auth/login');
+          return;
+        }
+
         // Fetch bookings from the admin API endpoint.
-        const response = await fetch(`${API_URL}/api/v1/admin/bookings/`);
+        const response = await fetch(`${API_URL}/api/v1/admin/bookings/`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
         if (response.ok) {
           const data = await response.json();
           setBookings(data);
@@ -62,6 +77,10 @@ const ManageBookingsPage: React.FC = () => {
           // Handle API errors and set the error message.
           const data = await response.json();
           console.error('Admin: Failed to fetch bookings:', data.detail || response.statusText);
+          if (response.status === 401) {
+            router.push('/auth/login');
+            return;
+          }
           setError(data.detail || 'Failed to fetch bookings');
         }
       } catch (err) {
@@ -75,7 +94,7 @@ const ManageBookingsPage: React.FC = () => {
     };
 
     fetchBookings();
-  }, []); // Empty dependency array ensures this effect runs only once after the initial render.
+  }, [router]);
 
   // Display loading message while data is being fetched.
   if (loading) {

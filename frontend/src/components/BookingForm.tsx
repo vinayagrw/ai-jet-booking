@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Jet } from '../types';
-import { bookingService } from '../services/bookingService';
+import { createBooking } from '../services/bookingService';
 
 interface BookingFormProps {
-  jet: Jet;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCancel }) => {
+export const BookingForm: React.FC<BookingFormProps> = ({ onSuccess, onCancel }) => {
+  const [jets, setJets] = useState<Jet[]>([]);
+  const [selectedJet, setSelectedJet] = useState<Jet | null>(null);
   const [formData, setFormData] = useState({
     origin: '',
     destination: '',
@@ -20,21 +21,44 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchJets = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/jets/`);
+        if (response.ok) {
+          const data = await response.json();
+          setJets(data);
+        } else {
+          setError('Failed to load available jets');
+        }
+      } catch (err) {
+        setError('Failed to load available jets');
+        console.error('Error loading jets:', err);
+      }
+    };
+
+    fetchJets();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedJet) {
+      setError('Please select a jet');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
 
       const booking = {
         ...formData,
-        jet_id: jet.id,
-        user_id: localStorage.getItem('userId') || '', // This should come from your auth context
+        jet_id: selectedJet.id,
         start_time: new Date(formData.start_time).toISOString(),
         end_time: new Date(formData.end_time).toISOString()
       };
 
-      await bookingService.createBooking(booking);
+      await createBooking(booking);
       onSuccess?.();
     } catch (err) {
       setError('Failed to create booking');
@@ -44,15 +68,39 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'jet_id') {
+      const jet = jets.find(j => j.id === value);
+      setSelectedJet(jet || null);
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="booking-form">
-      <h2>Book {jet.name}</h2>
+      <h2>Book a Jet</h2>
       
+      <div className="form-group">
+        <label htmlFor="jet_id">Select Jet</label>
+        <select
+          id="jet_id"
+          name="jet_id"
+          value={selectedJet?.id || ''}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded"
+        >
+          <option value="">Select a jet</option>
+          {jets.map((jet) => (
+            <option key={jet.id} value={jet.id}>
+              {jet.name} - {jet.manufacturer} (Max Passengers: {jet.max_passengers})
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="form-group">
         <label htmlFor="origin">Origin</label>
         <input
@@ -62,6 +110,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           value={formData.origin}
           onChange={handleChange}
           required
+          className="w-full p-2 border rounded"
         />
       </div>
 
@@ -74,6 +123,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           value={formData.destination}
           onChange={handleChange}
           required
+          className="w-full p-2 border rounded"
         />
       </div>
 
@@ -86,6 +136,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           value={formData.start_time}
           onChange={handleChange}
           required
+          className="w-full p-2 border rounded"
         />
       </div>
 
@@ -98,6 +149,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           value={formData.end_time}
           onChange={handleChange}
           required
+          className="w-full p-2 border rounded"
         />
       </div>
 
@@ -108,10 +160,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           id="passengers"
           name="passengers"
           min="1"
-          max={jet.max_passengers}
+          max={selectedJet?.max_passengers || 1}
           value={formData.passengers}
           onChange={handleChange}
           required
+          className="w-full p-2 border rounded"
         />
       </div>
 
@@ -122,16 +175,26 @@ export const BookingForm: React.FC<BookingFormProps> = ({ jet, onSuccess, onCanc
           name="special_requests"
           value={formData.special_requests}
           onChange={handleChange}
+          className="w-full p-2 border rounded"
         />
       </div>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
 
-      <div className="form-actions">
-        <button type="button" onClick={onCancel} disabled={loading}>
+      <div className="form-actions flex gap-4">
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={loading}
+          className="px-4 py-2 border rounded hover:bg-gray-100"
+        >
           Cancel
         </button>
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+        >
           {loading ? 'Creating Booking...' : 'Create Booking'}
         </button>
       </div>

@@ -37,24 +37,28 @@ export interface JetCategory {
 
 export interface Booking {
   id: string;
+  user_id: string;
+  jet_id: string;
   origin: string;
   destination: string;
   start_time: string;
   end_time: string;
   passengers: number;
-  jet_id: string;
+  special_requests?: string;
   status: 'pending' | 'confirmed' | 'cancelled';
+  total_price?: number;
   created_at: string;
   updated_at: string;
 }
 
 export interface BookingCreate {
+  jet_id: string;
   origin: string;
   destination: string;
   start_time: string;
   end_time: string;
   passengers: number;
-  jet_id: string;
+  special_requests?: string;
 }
 
 export interface User {

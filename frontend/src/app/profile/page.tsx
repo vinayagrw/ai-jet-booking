@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface User {
   id: string;
@@ -38,38 +38,52 @@ export default function ProfilePage() {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
+          console.log('No token found, redirecting to login');
           router.push('/auth/login');
           return;
         }
 
+        console.log('Fetching user data...');
         // Fetch user data
         const userResponse = await fetch(`${API_URL}/api/v1/users/me`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
 
+        console.log('User response status:', userResponse.status);
         if (!userResponse.ok) {
-          throw new Error('Failed to fetch user data');
+          const errorData = await userResponse.json();
+          console.error('Error response:', errorData);
+          throw new Error(errorData.detail || 'Failed to fetch user data');
         }
 
         const userData = await userResponse.json();
+        console.log('User data received:', userData);
         setUser(userData);
 
         // Fetch user's bookings
-        const bookingsResponse = await fetch(`${API_URL}/api/v1/bookings/my-bookings`, {
+        console.log('Fetching bookings...');
+        const bookingsResponse = await fetch(`${API_URL}/api/v1/bookings/`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
 
+        console.log('Bookings response status:', bookingsResponse.status);
         if (bookingsResponse.ok) {
           const bookingsData = await bookingsResponse.json();
+          console.log('Bookings data received:', bookingsData);
           setBookings(bookingsData);
+        } else {
+          const errorData = await bookingsResponse.json();
+          console.error('Error fetching bookings:', errorData);
         }
       } catch (err) {
-        console.error('Error fetching profile data:', err);
-        setError('Failed to load profile data');
+        console.error('Error in fetchUserData:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load profile data');
       } finally {
         setLoading(false);
       }
@@ -96,6 +110,12 @@ export default function ProfilePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-red-600 dark:text-red-400">{error}</h2>
+            <button
+              onClick={() => router.push('/auth/login')}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Return to Login
+            </button>
           </div>
         </div>
       </div>
@@ -146,35 +166,26 @@ export default function ProfilePage() {
                     <div key={booking.id} className="border dark:border-gray-700 rounded-lg p-4">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="text-lg font-medium text-gray-900 dark:text-white">
-                            {booking.origin} to {booking.destination}
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {booking.origin} → {booking.destination}
                           </p>
                           <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {new Date(booking.start_time).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
+                            {new Date(booking.start_time).toLocaleDateString()} - {new Date(booking.end_time).toLocaleDateString()}
                           </p>
                         </div>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          booking.status === 'confirmed' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                            : booking.status === 'pending'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                          booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                          booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
                         }`}>
-                          {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                          {booking.status}
                         </span>
                       </div>
-                      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        Total: ${booking.total_price.toLocaleString()}
-                      </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 dark:text-gray-400">No bookings found</p>
+                <p className="text-gray-500 dark:text-gray-400">No bookings found.</p>
               )}
             </div>
           </div>

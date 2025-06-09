@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { Booking } from '@/types';
 import { getBookings } from '@/services/bookingService';
 import BookingCard from '@/components/BookingCard';
+import { BookingForm } from '@/components/BookingForm';
 
 /**
  * @function BookingsPage
@@ -20,25 +21,22 @@ export default function BookingsPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
-  /**
-   * @effect
-   * @description Fetches booking data for the authenticated user from the backend API when the component mounts.
-   * Sets loading state, handles successful data fetching, and catches errors.
-   */
+  const fetchBookings = async () => {
+    try {
+      setLoading(true);
+      const data = await getBookings();
+      setBookings(data);
+    } catch (err) {
+      setError('Failed to load bookings. Please try again later.');
+      console.error('Error fetching bookings:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const data = await getBookings();
-        setBookings(data);
-      } catch (err) {
-        setError('Failed to load bookings. Please try again later.');
-        console.error('Error fetching bookings:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBookings();
   }, []);
 
@@ -54,7 +52,28 @@ export default function BookingsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Your Bookings</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Your Bookings</h1>
+        <button
+          onClick={() => setShowBookingForm(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+        >
+          Create New Booking
+        </button>
+      </div>
+
+      {showBookingForm ? (
+        <div className="mb-8">
+          <BookingForm
+            onSuccess={() => {
+              setShowBookingForm(false);
+              fetchBookings();
+            }}
+            onCancel={() => setShowBookingForm(false)}
+          />
+        </div>
+      ) : null}
+
       {bookings.length === 0 ? (
         <div className="text-center text-gray-500">
           You haven't made any bookings yet.

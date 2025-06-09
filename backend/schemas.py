@@ -3,31 +3,41 @@ from typing import Optional, List, Union
 from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
+import logging
+
+# Configure logger for this module
+logger = logging.getLogger(__name__)
 
 # Base schemas
 class UserBase(BaseModel):
-    email: EmailStr
-    name: Optional[str] = None
+    email: str
+    name: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    phone: Optional[str] = None
+    phone_number: Optional[str] = None
     profile_image_url: Optional[str] = None
-    membership_id: Optional[UUID4] = None
 
 class UserCreate(UserBase):
     password: str
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = None
+    email: Optional[EmailStr] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
-    phone: Optional[str] = None
-    profile_image_url: Optional[str] = None
-    membership_id: Optional[UUID4] = None
+    phone_number: Optional[str] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
+
+    @validator('role')
+    def validate_role(cls, v):
+        if v is not None and v not in ['user', 'admin']:
+            raise ValueError('role must be one of: user, admin')
+        return v
 
 class User(UserBase):
     id: UUID
     role: str
+    membership_id: Optional[UUID] = None
     created_at: datetime
     updated_at: datetime
 
@@ -90,11 +100,11 @@ class Membership(MembershipInDB):
 class JetBase(BaseModel):
     name: str
     manufacturer: str
-    category_id: UUID4
+    category_id: Optional[UUID] = None
     year: Optional[int] = None
     max_speed_mph: Optional[int] = None
     max_passengers: Optional[int] = None
-    price_per_hour: Optional[Decimal] = None
+    price_per_hour: Optional[float] = None
     cabin_height_ft: Optional[float] = None
     cabin_width_ft: Optional[float] = None
     cabin_length_ft: Optional[float] = None
@@ -106,20 +116,28 @@ class JetBase(BaseModel):
     gallery_urls: Optional[List[str]] = None
     features: Optional[List[str]] = None
     amenities: Optional[List[str]] = None
+    status: str = "available"
     range_nm: int
-    location: Optional[str] = None
 
 class JetCreate(JetBase):
     pass
 
+class Jet(JetBase):
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
 class JetUpdate(BaseModel):
     name: Optional[str] = None
     manufacturer: Optional[str] = None
-    category_id: Optional[UUID4] = None
+    category_id: Optional[UUID] = None
     year: Optional[int] = None
     max_speed_mph: Optional[int] = None
     max_passengers: Optional[int] = None
-    price_per_hour: Optional[Decimal] = None
+    price_per_hour: Optional[float] = None
     cabin_height_ft: Optional[float] = None
     cabin_width_ft: Optional[float] = None
     cabin_length_ft: Optional[float] = None
@@ -133,84 +151,9 @@ class JetUpdate(BaseModel):
     amenities: Optional[List[str]] = None
     status: Optional[str] = None
     range_nm: Optional[int] = None
-    location: Optional[str] = None
-
-class JetInDB(JetBase):
-    id: UUID4
-    status: str
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-class Jet(JetInDB):
-    pass
-
-class ContactInfoBase(BaseModel):
-    type: str
-    value: str
-    label: Optional[str] = None
-    is_primary: bool = False
-
-class ContactInfoCreate(ContactInfoBase):
-    pass
-
-class ContactInfoUpdate(BaseModel):
-    type: Optional[str] = None
-    value: Optional[str] = None
-    label: Optional[str] = None
-    is_primary: Optional[bool] = None
-
-class ContactInfoInDB(ContactInfoBase):
-    id: UUID4
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-class ContactInfo(ContactInfoInDB):
-    pass
-
-class UserMembershipBase(BaseModel):
-    user_id: UUID4
-    membership_id: UUID4
-    start_date: datetime
-    end_date: datetime
-    status: str
-
-    @validator('status')
-    def validate_status(cls, v):
-        if v not in ['active', 'expired', 'cancelled']:
-            raise ValueError('status must be one of: active, expired, cancelled')
-        return v
-
-class UserMembershipCreate(UserMembershipBase):
-    pass
-
-class UserMembershipUpdate(BaseModel):
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
-    status: Optional[str] = None
-
-    @validator('status')
-    def validate_status(cls, v):
-        if v is not None and v not in ['active', 'expired', 'cancelled']:
-            raise ValueError('status must be one of: active, expired, cancelled')
-        return v
-
-class UserMembershipInDB(UserMembershipBase):
-    id: UUID4
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
-
-class UserMembership(UserMembershipInDB):
-    pass
 
 class BookingBase(BaseModel):
+    jet_id: UUID
     origin: str
     destination: str
     start_time: datetime
@@ -218,20 +161,44 @@ class BookingBase(BaseModel):
     passengers: int = 1
     special_requests: Optional[str] = None
 
+    @validator('end_time')
+    def end_time_must_be_after_start_time(cls, v, values):
+        if 'start_time' in values and v <= values['start_time']:
+            raise ValueError('end_time must be after start_time')
+        return v
+
 class BookingCreate(BookingBase):
-    jet_id: UUID
+    pass
 
 class Booking(BookingBase):
     id: UUID
     user_id: UUID
-    jet_id: UUID
-    status: str
+    status: str = "pending"
     total_price: Optional[Decimal] = None
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
+
+    def __init__(self, **data):
+        try:
+            logger.info(f"Initializing Booking with data: {data}")
+            super().__init__(**data)
+        except Exception as e:
+            logger.error(f"Error initializing Booking: {str(e)}")
+            logger.error(f"Data that caused the error: {data}")
+            raise
+
+class BookingUpdate(BaseModel):
+    origin: Optional[str] = None
+    destination: Optional[str] = None
+    start_time: Optional[datetime] = None
+    end_time: Optional[datetime] = None
+    passengers: Optional[int] = None
+    special_requests: Optional[str] = None
+    status: Optional[str] = None
+    total_price: Optional[Decimal] = None
 
 class OwnershipShareBase(BaseModel):
     user_id: UUID4
@@ -276,7 +243,6 @@ class OwnershipShare(OwnershipShareInDB):
 class Token(BaseModel):
     access_token: str
     token_type: str
-    user: User
 
 class TokenData(BaseModel):
     email: Optional[str] = None
@@ -312,6 +278,63 @@ class AircraftResponse(AircraftBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
     category: CategoryResponse
+
+    class Config:
+        from_attributes = True
+
+class ContactInfoBase(BaseModel):
+    type: str
+    value: str
+    label: Optional[str] = None
+    is_primary: bool = False
+
+class ContactInfoCreate(ContactInfoBase):
+    pass
+
+class ContactInfoUpdate(BaseModel):
+    type: Optional[str] = None
+    value: Optional[str] = None
+    label: Optional[str] = None
+    is_primary: Optional[bool] = None
+
+class ContactInfo(ContactInfoBase):
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class UserMembershipBase(BaseModel):
+    user_id: UUID
+    membership_id: UUID
+    start_date: datetime
+    end_date: datetime
+    status: str
+
+    @validator('status')
+    def validate_status(cls, v):
+        if v not in ['active', 'expired', 'cancelled']:
+            raise ValueError('status must be one of: active, expired, cancelled')
+        return v
+
+class UserMembershipCreate(UserMembershipBase):
+    pass
+
+class UserMembershipUpdate(BaseModel):
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    status: Optional[str] = None
+
+    @validator('status')
+    def validate_status(cls, v):
+        if v is not None and v not in ['active', 'expired', 'cancelled']:
+            raise ValueError('status must be one of: active, expired, cancelled')
+        return v
+
+class UserMembership(UserMembershipBase):
+    id: UUID
+    created_at: datetime
 
     class Config:
         from_attributes = True 

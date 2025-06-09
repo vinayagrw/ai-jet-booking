@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
 import logging # Import the logging module
+import json
+import traceback
 
 from .. import schemas, models
 from ..database import get_db
@@ -211,15 +213,44 @@ def delete_jet(
 
 @router.get("/bookings/", response_model=List[schemas.Booking], summary="Get all bookings (Admin only)")
 def get_all_bookings(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_admin_user)
 ):
-    """Retrieve a list of all bookings in the system.\n\n    Requires admin privileges.\n
-    Args:\n        db (Session): Database session dependency.\n
-    Returns:\n        List[schemas.Booking]: A list of all booking objects.\n    """
-    logger.info("Admin: Fetching all bookings.")
-    bookings = db.query(models.Booking).all()
-    logger.info(f"Admin: Retrieved {len(bookings)} bookings.")
-    return bookings
+    """Retrieve a list of all bookings in the system."""
+    try:
+        logger.info(f"Admin {current_user.email}: Fetching all bookings")
+        bookings = db.query(models.Booking).all()
+        
+        # Log the number of bookings found
+        logger.info(f"Admin {current_user.email}: Retrieved {len(bookings)} bookings")
+        
+        # Log detailed information about each booking
+        for booking in bookings:
+            booking_dict = {
+                'id': str(booking.id),
+                'user_id': str(booking.user_id),
+                'jet_id': str(booking.jet_id),
+                'origin': booking.origin,
+                'destination': booking.destination,
+                'start_time': booking.start_time.isoformat() if booking.start_time else None,
+                'end_time': booking.end_time.isoformat() if booking.end_time else None,
+                'status': booking.status,
+                'passengers': booking.passengers,
+                'special_requests': booking.special_requests,
+                'total_price': float(booking.total_price) if booking.total_price else None,
+                'created_at': booking.created_at.isoformat() if booking.created_at else None,
+                'updated_at': booking.updated_at.isoformat() if booking.updated_at else None
+            }
+            logger.info(f"Admin {current_user.email}: Booking data: {json.dumps(booking_dict, indent=2)}")
+            
+        return bookings
+    except Exception as e:
+        logger.error(f"Admin {current_user.email}: Error fetching bookings: {str(e)}")
+        logger.error(f"Full traceback: {traceback.format_exc()}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching bookings"
+        )
 
 @router.put("/bookings/{booking_id}", response_model=schemas.Booking, summary="Update booking details (Admin only)")
 def update_booking(

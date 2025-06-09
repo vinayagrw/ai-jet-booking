@@ -23,36 +23,42 @@ export default function BookingCard({ booking }: BookingCardProps) {
       
       <div className="space-y-3">
         <div className="flex justify-between">
-          <span className="text-gray-600">Start Date:</span>
-          <span className="font-medium">{formatDate(booking.startDate)}</span>
+          <span className="text-gray-600">Origin:</span>
+          <span className="font-medium">{booking.origin}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">End Date:</span>
-          <span className="font-medium">{formatDate(booking.endDate)}</span>
+          <span className="text-gray-600">Destination:</span>
+          <span className="font-medium">{booking.destination}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Total Price:</span>
-          <span className="font-medium text-blue-600">${booking.totalPrice}</span>
+          <span className="text-gray-600">Start Time:</span>
+          <span className="font-medium">{formatDate(booking.start_time)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">End Time:</span>
+          <span className="font-medium">{formatDate(booking.end_time)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-gray-600">Passengers:</span>
+          <span className="font-medium">{booking.passengers}</span>
         </div>
       </div>
 
       <div className="mt-4 pt-4 border-t border-gray-200">
         <div className="flex justify-between text-sm text-gray-500">
-          <span>Created: {formatDate(booking.createdAt)}</span>
-          <span>Updated: {formatDate(booking.updatedAt)}</span>
+          <span>Created: {formatDate(booking.created_at)}</span>
+          <span>Updated: {formatDate(booking.updated_at)}</span>
         </div>
       </div>
 
-      {booking.status === 'pending' && (
-        <div className="mt-4 flex space-x-2">
-          <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
-            Confirm
-          </button>
-          <button className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300">
-            Cancel
-          </button>
-        </div>
-      )}
+      <div className="mt-4 flex space-x-2">
+        <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors duration-300">
+          View Details
+        </button>
+        <button className="flex-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors duration-300">
+          Cancel
+        </button>
+      </div>
     </div>
   );
 } 

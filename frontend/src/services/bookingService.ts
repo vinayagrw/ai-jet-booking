@@ -12,19 +12,33 @@ export const getBookings = async (): Promise<Booking[]> => {
     throw new Error('No authentication token found');
   }
 
-  const response = await fetch(`${API_URL}/api/v1/bookings/my-bookings`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+  console.log('Fetching bookings from:', `${API_URL}/api/v1/bookings/`);
+
+  try {
+    const response = await fetch(`${API_URL}/api/v1/bookings/`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: errorData
+      });
+      throw new Error(errorData.detail || 'Failed to fetch bookings');
     }
-  });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to fetch bookings');
+    const data = await response.json();
+    console.log('Received bookings data:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in getBookings:', error);
+    throw error;
   }
-
-  return response.json();
 };
 
 /**
@@ -38,70 +52,112 @@ export const createBooking = async (booking: BookingCreate): Promise<Booking> =>
     throw new Error('No authentication token found');
   }
 
-  const response = await fetch(`${API_URL}/api/v1/bookings/`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(booking)
-  });
+  console.log('Creating booking:', booking);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to create booking');
-  }
+  try {
+    const response = await fetch(`${API_URL}/api/v1/bookings/`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(booking)
+    });
 
-  return response.json();
-};
-
-/**
- * Cancels a booking
- * @param bookingId ID of the booking to cancel
- * @returns Promise<void>
- */
-export const cancelBooking = async (bookingId: string): Promise<void> => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
-
-  const response = await fetch(`${API_URL}/api/v1/bookings/${bookingId}/cancel`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: errorData
+      });
+      throw new Error(errorData.detail || 'Failed to create booking');
     }
-  });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to cancel booking');
+    const data = await response.json();
+    console.log('Created booking:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in createBooking:', error);
+    throw error;
   }
 };
 
 /**
  * Gets details of a specific booking
- * @param bookingId ID of the booking to fetch
+ * @param id Booking ID
  * @returns Promise<Booking> The booking details
  */
-export const getBookingById = async (bookingId: string): Promise<Booking> => {
+export const getBookingById = async (id: string): Promise<Booking> => {
   const token = localStorage.getItem('token');
   if (!token) {
     throw new Error('No authentication token found');
   }
 
-  const response = await fetch(`${API_URL}/api/v1/bookings/${bookingId}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  });
+  console.log('Fetching booking:', id);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.detail || 'Failed to fetch booking details');
+  try {
+    const response = await fetch(`${API_URL}/api/v1/bookings/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: errorData
+      });
+      throw new Error(errorData.detail || 'Failed to fetch booking');
+    }
+
+    const data = await response.json();
+    console.log('Received booking data:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in getBookingById:', error);
+    throw error;
+  }
+};
+
+/**
+ * Cancels a booking
+ * @param id Booking ID
+ * @returns Promise<void>
+ */
+export const cancelBooking = async (id: string): Promise<void> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authentication token found');
   }
 
-  return response.json();
+  console.log('Cancelling booking:', id);
+
+  try {
+    const response = await fetch(`${API_URL}/api/v1/bookings/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: errorData
+      });
+      throw new Error(errorData.detail || 'Failed to cancel booking');
+    }
+
+    console.log('Successfully cancelled booking:', id);
+  } catch (error) {
+    console.error('Error in cancelBooking:', error);
+    throw error;
+  }
 }; 
