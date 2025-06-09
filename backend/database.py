@@ -17,8 +17,13 @@ if not DATABASE_URL:
 
 db_logger.info(f"Using database URL: {DATABASE_URL}")
 
-# Create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+try:
+    # Create SQLAlchemy engine
+    engine = create_engine(DATABASE_URL, echo=True)
+    db_logger.info("Database engine created successfully")
+except Exception as e:
+    db_logger.error(f"Failed to create database engine: {str(e)}")
+    raise
 
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -34,6 +39,7 @@ def get_db():
         yield db
     except Exception as e:
         db_logger.error(f"Database error: {str(e)}")
+        db.rollback()
         raise
     finally:
         db.close()

@@ -8,4 +8,10 @@ python-multipart==0.0.6
 python-dotenv==1.0.0
 pydantic==2.5.2
 pydantic-settings==2.1.0
-uuid==1.30 
+uuid==1.30
+email-validator==2.2.0
+alembic==1.13.1
+python-jose[cryptography]==3.3.0
+bcrypt==4.1.2
+dnspython==2.7.0
+PyJWT==2.8.0 

@@ -37,14 +37,37 @@ export interface JetCategory {
 
 export interface Booking {
   id: string;
-  userId: string;
-  jetId: string;
-  startDate: string;
-  endDate: string;
+  origin: string;
+  destination: string;
+  start_time: string;
+  end_time: string;
+  passengers: number;
+  jet_id: string;
   status: 'pending' | 'confirmed' | 'cancelled';
-  totalPrice: number;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface BookingCreate {
+  origin: string;
+  destination: string;
+  start_time: string;
+  end_time: string;
+  passengers: number;
+  jet_id: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  profile_image_url?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Membership {
@@ -52,10 +75,22 @@ export interface Membership {
   name: string;
   description: string;
   price: number;
-  duration: number; // in months
+  duration_months: number;
   benefits: string[];
-  maxBookings: number;
-  discount: number; // percentage
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserMembership {
+  id: string;
+  user_id: string;
+  membership_id: string;
+  start_date: string;
+  end_date: string;
+  status: 'active' | 'expired' | 'cancelled';
+  created_at: string;
+  updated_at: string;
 }
 
 export interface SearchFilters {

@@ -6,28 +6,7 @@ from datetime import datetime
 import uuid
 
 from .database import Base
-
-class User(Base):
-    """SQLAlchemy model for users."""
-    __tablename__ = "users"
-
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(String(100))
-    email = Column(String(255), unique=True, nullable=False)
-    password_hash = Column(String(255), nullable=False)
-    role = Column(String(50), nullable=False, default="user")
-    first_name = Column(String(100))
-    last_name = Column(String(100))
-    phone = Column(String(20))
-    profile_image_url = Column(String(255))
-    membership_id = Column(UUID(as_uuid=True), ForeignKey("memberships.id"))
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
-
-    # Relationships
-    membership = relationship("Membership", back_populates="users")
-    bookings = relationship("Booking", back_populates="user")
-    ownership_shares = relationship("OwnershipShare", back_populates="user")
+from .models.base import TimestampMixin
 
 class JetCategory(Base):
     __tablename__ = "jet_categories"

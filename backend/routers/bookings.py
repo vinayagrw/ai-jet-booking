@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
-import logging # Import the logging module
+import logging
 
 from .. import schemas, models
 from ..database import get_db
-from .auth import get_current_active_user
+from .auth import get_current_user
 
 # Configure logger for this module
 logger = logging.getLogger(__name__)
@@ -14,24 +14,48 @@ logger = logging.getLogger(__name__)
 router = APIRouter(
     prefix="/bookings",
     tags=["Bookings"],
-    responses={
-        401: {"description": "Unauthorized - User not logged in or token invalid"},
-        403: {"description": "Forbidden - Not authorized to perform action"},
-        404: {"description": "Booking or associated resource not found"},
-    },
 )
 
-@router.post("/", response_model=schemas.Booking, summary="Create a new booking")
+@router.post("/bookings/", response_model=schemas.Booking, summary="Create a new booking")
 def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)):
-    # Logic to create a booking
-    return booking
+    """Create a new booking in the database."""
+    logger.info(f"Creating new booking for jet ID: {booking.jet_id}")
+    try:
+        # Create a new booking record
+        db_booking = models.Booking(
+            user_id=booking.user_id,
+            jet_id=booking.jet_id,
+            origin=booking.origin,
+            destination=booking.destination,
+            start_time=booking.start_time,
+            end_time=booking.end_time,
+            passengers=booking.passengers,
+            special_requests=booking.special_requests,
+            total_price=booking.total_price,
+            status=booking.status
+        )
+        
+        # Add to database and commit
+        db.add(db_booking)
+        db.commit()
+        db.refresh(db_booking)
+        
+        logger.info(f"Successfully created booking with ID: {db_booking.id}")
+        return db_booking
+    except Exception as e:
+        logger.error(f"Error creating booking: {str(e)}")
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create booking"
+        )
 
-@router.get("/", response_model=List[schemas.Booking], summary="Get all bookings for the current user")
+@router.get("/bookings/", response_model=List[schemas.Booking], summary="Get all bookings for the current user")
 def get_bookings(db: Session = Depends(get_db)):
     # Logic to fetch all bookings
     return db.query(models.Booking).all()
 
-@router.get("/{booking_id}", response_model=schemas.Booking, summary="Get details of a specific booking")
+@router.get("/bookings/{booking_id}", response_model=schemas.Booking, summary="Get details of a specific booking")
 def get_booking(booking_id: int, db: Session = Depends(get_db)):
     # Logic to fetch a specific booking
     booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
@@ -39,7 +63,7 @@ def get_booking(booking_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Booking not found")
     return booking
 
-@router.delete("/{booking_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Cancel a booking")
+@router.delete("/bookings/{booking_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Cancel a booking")
 def cancel_booking(booking_id: int, db: Session = Depends(get_db)):
     # Logic to cancel a booking
     booking = db.query(models.Booking).filter(models.Booking.id == booking_id).first()
@@ -47,4 +71,23 @@ def cancel_booking(booking_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Booking not found")
     db.delete(booking)
     db.commit()
-    return {"message": "Booking cancelled successfully"} 
+    return {"message": "Booking cancelled successfully"}
+
+@router.get("/my-bookings", response_model=List[schemas.Booking])
+async def get_my_bookings(
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Get the current user's bookings."""
+    try:
+        logger.info(f"Fetching bookings for user: {current_user.email}")
+        bookings = db.query(models.Booking).filter(
+            models.Booking.user_id == current_user.id
+        ).all()
+        return bookings
+    except Exception as e:
+        logger.error(f"Error fetching user bookings: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching bookings"
+        ) 

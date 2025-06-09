@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException, Request, Path
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from backend.routers import auth, jets, bookings, memberships, ownership_shares, admin, contact, categories, logs
+from backend.routers import auth, jets, bookings, memberships, ownership_shares, admin, contact, categories, logs, users
 from backend.database import engine, Base, get_db
 from backend.logger import api_logger
 from sqlalchemy.orm import Session
@@ -11,6 +11,7 @@ from . import models, schemas, crud
 import time
 from uuid import UUID
 from typing import List
+import logging
 
 # Load environment variables from .env file
 load_dotenv()
@@ -21,6 +22,10 @@ DEBUG = os.getenv("DEBUG") == "True"  # Convert to boolean
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="AI Jet Booking API",
@@ -70,6 +75,7 @@ app.include_router(admin.router, prefix="/api/v1", tags=["Admin"])
 app.include_router(contact.router, prefix="/api/v1", tags=["Contact"])
 app.include_router(categories.router, prefix="/api/v1", tags=["Categories"])
 app.include_router(logs.router, prefix="/api/v1", tags=["Logs"])
+app.include_router(users.router, prefix="/api/v1")
 
 @app.get("/")
 async def root():

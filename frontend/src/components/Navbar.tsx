@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import UserMenu from './UserMenu';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,13 +45,8 @@ export function Navbar() {
               ))}
             </div>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-gray-500 hover:text-gray-700"
-            >
-              Sign In
-            </Link>
+          <div className="flex items-center gap-4">
+            <UserMenu />
           </div>
           <div className="-mr-2 flex items-center sm:hidden">
             <button

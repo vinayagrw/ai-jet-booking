@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr, UUID4, Field, validator
 from typing import Optional, List, Union
 from datetime import datetime
 from decimal import Decimal
+from uuid import UUID
 
 # Base schemas
 class UserBase(BaseModel):
@@ -24,17 +25,14 @@ class UserUpdate(BaseModel):
     profile_image_url: Optional[str] = None
     membership_id: Optional[UUID4] = None
 
-class UserInDB(UserBase):
-    id: UUID4
+class User(UserBase):
+    id: UUID
     role: str
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
-
-class User(UserInDB):
-    pass
 
 class JetCategoryBase(BaseModel):
     name: str
@@ -213,40 +211,27 @@ class UserMembership(UserMembershipInDB):
     pass
 
 class BookingBase(BaseModel):
-    user_id: UUID4
-    jet_id: UUID4
     origin: str
     destination: str
     start_time: datetime
     end_time: datetime
     passengers: int = 1
     special_requests: Optional[str] = None
-    total_price: Optional[Decimal] = None
 
 class BookingCreate(BookingBase):
-    pass
+    jet_id: UUID
 
-class BookingUpdate(BaseModel):
-    origin: Optional[str] = None
-    destination: Optional[str] = None
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
-    status: Optional[str] = None
-    passengers: Optional[int] = None
-    special_requests: Optional[str] = None
-    total_price: Optional[Decimal] = None
-
-class BookingInDB(BookingBase):
-    id: UUID4
+class Booking(BookingBase):
+    id: UUID
+    user_id: UUID
+    jet_id: UUID
     status: str
+    total_price: Optional[Decimal] = None
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
-
-class Booking(BookingInDB):
-    pass
 
 class OwnershipShareBase(BaseModel):
     user_id: UUID4
@@ -291,6 +276,7 @@ class OwnershipShare(OwnershipShareInDB):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    user: User
 
 class TokenData(BaseModel):
     email: Optional[str] = None

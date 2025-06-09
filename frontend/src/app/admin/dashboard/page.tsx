@@ -42,7 +42,6 @@ const AdminDashboardPage = () => {
           <ul className="space-y-2">
             <li><Link href="/admin/manage-jets" onClick={() => handleNavLinkClick('/admin/manage-jets')} className="text-blue-600 hover:underline">List All Jets</Link></li>
             <li><Link href="/admin/jets/add" onClick={() => handleNavLinkClick('/admin/jets/add')} className="text-blue-600 hover:underline">Add New Jet</Link></li>
-            {/* Future: Add links for Update/Delete specific jet */}
           </ul>
         </div>
 
@@ -50,9 +49,8 @@ const AdminDashboardPage = () => {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Manage Users</h2>
           <ul className="space-y-2">
-            <li><Link href="/admin/users" onClick={() => handleNavLinkClick('/admin/users')} className="text-blue-600 hover:underline">List All Users</Link></li>
+            <li><Link href="/admin/manage-users" onClick={() => handleNavLinkClick('/admin/manage-users')} className="text-blue-600 hover:underline">List All Users</Link></li>
             <li><Link href="/admin/users/add" onClick={() => handleNavLinkClick('/admin/users/add')} className="text-blue-600 hover:underline">Add New User</Link></li>
-            {/* Future: Add links for Update/Delete specific user */}
           </ul>
         </div>
 
@@ -61,7 +59,6 @@ const AdminDashboardPage = () => {
           <h2 className="text-xl font-semibold mb-4">Manage Bookings</h2>
           <ul className="space-y-2">
             <li><Link href="/admin/manage-bookings" onClick={() => handleNavLinkClick('/admin/manage-bookings')} className="text-blue-600 hover:underline">List All Bookings</Link></li>
-            {/* Future: Add links for Update/Delete specific booking */}
           </ul>
         </div>
 

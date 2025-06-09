@@ -30,7 +30,6 @@ def create_booking(db: Session, booking: schemas.BookingCreate) -> models.Bookin
             destination=booking.destination,
             start_time=booking.start_time,
             end_time=booking.end_time,
-            total_amount=booking.total_amount,
             status=booking.status,
             passengers=booking.passengers,
             special_requests=booking.special_requests,
