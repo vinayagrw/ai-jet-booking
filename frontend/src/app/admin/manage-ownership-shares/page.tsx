@@ -51,7 +51,7 @@ const ManageOwnershipSharesPage: React.FC = () => {
       console.log('Admin: Attempting to fetch ownership shares.');
       try {
         // Fetch ownership shares from the admin API endpoint.
-        const response = await fetch(`${API_URL}/api/admin/ownership-shares`);
+        const response = await fetch(`${API_URL}/api/v1/admin/ownership-shares/`);
         if (response.ok) {
           const data = await response.json();
           setOwnershipShares(data);

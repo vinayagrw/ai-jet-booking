@@ -53,7 +53,7 @@ const ManageBookingsPage: React.FC = () => {
       console.log('Admin: Attempting to fetch bookings.');
       try {
         // Fetch bookings from the admin API endpoint.
-        const response = await fetch(`${API_URL}/api/admin/bookings`);
+        const response = await fetch(`${API_URL}/api/v1/admin/bookings/`);
         if (response.ok) {
           const data = await response.json();
           setBookings(data);

@@ -60,9 +60,9 @@ const ManageUsersPage: React.FC = () => {
           <ul className="space-y-4">
             {users.map((user) => (
               <li key={user.id} className="border-b pb-4 last:border-b-0">
-                <h3 className="text-xl font-bold">{user.name} ({user.role})</h3>
+                <h3 className="text-xl font-bold">{user.name}</h3>
                 <p>Email: {user.email}</p>
-                {/* Add edit/delete buttons here */}
+                <p>Role: {user.role}</p>
               </li>
             ))}
           </ul>

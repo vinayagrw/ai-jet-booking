@@ -51,7 +51,7 @@ const ManageMembershipsPage: React.FC = () => {
       console.log('Admin: Attempting to fetch memberships.');
       try {
         // Fetch memberships from the admin API endpoint.
-        const response = await fetch(`${API_URL}/api/admin/memberships`);
+        const response = await fetch(`${API_URL}/api/v1/admin/memberships/`);
         if (response.ok) {
           const data = await response.json();
           setMemberships(data);

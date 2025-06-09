@@ -195,3 +195,4 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 backend/logs/app_20250608.json
+backend/logs/app_20250608.json

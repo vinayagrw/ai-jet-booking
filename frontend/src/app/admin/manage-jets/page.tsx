@@ -35,7 +35,7 @@ const ManageJetsPage: React.FC = () => {
     const fetchJets = async () => {
       console.log('Admin: Attempting to fetch jets.');
       try {
-        const response = await fetch(`${API_URL}/api/admin/jets`);
+        const response = await fetch(`${API_URL}/api/v1/admin/jets/`);
         if (response.ok) {
           const data = await response.json();
           setJets(data);
