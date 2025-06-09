@@ -11,7 +11,7 @@ export default function JetCard({ jet }: JetCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <div className="relative h-48 w-full">
         <Image
-          src={jet.imageUrl || '/images/jet-placeholder.jpg'}
+          src={jet.imageUrl || '/images/jet-placeholder.svg'}
           alt={jet.name}
           fill
           className="object-cover"

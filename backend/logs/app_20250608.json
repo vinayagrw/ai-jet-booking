@@ -467,3 +467,156 @@
 {"timestamp": "2025-06-09T00:33:58.477516", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
 {"timestamp": "2025-06-09T00:34:00.262408", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
 {"timestamp": "2025-06-09T00:34:00.278272", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:37:38.512755", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:37:38.521115", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:38:28.757824", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:38:28.772221", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:39.523748", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:39.531272", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:39.534734", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:42.309035", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:42.316075", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:42.320916", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:42.327382", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:42.333463", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:42.334480", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:42.343566", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:42.347564", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:44.611106", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:44.625352", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:45.910527", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:45.914524", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:45.919431", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:45.924826", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:45.928830", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:45.929824", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:45.934825", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:45.937828", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:53.472841", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:53.472841", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:53.487969", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:53.495972", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:53.497969", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:53.508046", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:39:53.521278", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:53.528272", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:39:56.522517", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:39:56.540570", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:12.751320", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:12.755316", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:12.760867", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:41:12.766868", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:12.767861", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:41:12.770864", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:41:12.775369", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:12.778386", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:41:15.063233", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:15.073475", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:16.299914", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:16.304923", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:16.308926", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:41:16.314926", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:16.318927", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:41:16.320965", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:41:16.327475", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:41:16.329870", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:10.934990", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:10.934990", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:10.952260", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:10.959144", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:10.961233", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:10.963234", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:10.968233", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:10.970236", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:12.297656", "level": "INFO", "message": "Using database URL: postgresql://postgres:admin@localhost:5432/ai_jet_booking", "module": "database", "function": "<module>", "line": 18}
+{"timestamp": "2025-06-09T00:45:12.635380", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:12.642017", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:12.646019", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:12.667527", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:12.668528", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:12.670534", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:12.674625", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:12.676627", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:14.527392", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:14.540152", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:26.598262", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:26.606985", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:26.615707", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:26.641704", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.03s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:26.650714", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:45:26.650714", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:45:26.662223", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:45:26.668245", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:03.490708", "level": "INFO", "message": "Using database URL: postgresql://postgres:admin@localhost:5432/ai_jet_booking", "module": "database", "function": "<module>", "line": 18}
+{"timestamp": "2025-06-09T00:46:10.319018", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:10.319018", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:10.337105", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:10.430091", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.10s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:10.433089", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:10.435090", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:10.440565", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:10.442586", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:12.337822", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:12.346821", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:12.356826", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:12.375265", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:12.383190", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:12.388187", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:12.398187", "level": "INFO", "message": "Method: GET Path: /api/v1/memberships/ Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:12.406196", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:15.548989", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:15.561268", "level": "INFO", "message": "Method: GET Path: /api/v1/contact/primary Status: 200 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:17.266047", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:17.273462", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:17.281974", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:17.290974", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:17.298973", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:46:17.298973", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:46:17.309984", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:46:17.314973", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:48:36.078422", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:48:36.088552", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:48:36.091573", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:48:37.094656", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:48:37.109227", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:48:37.114118", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:53:57.065302", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:53:57.072460", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:53:57.073821", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:09.877708", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:09.883712", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:09.887708", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:09.894712", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:09.898706", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:09.901951", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:09.906948", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:09.911141", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:11.310550", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:11.322143", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:11.330970", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:12.102052", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:12.116048", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:12.123064", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:12.861313", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:12.871981", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:12.875286", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:13.833279", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:13.848712", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.02s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:13.860624", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:14.463046", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:14.471450", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:14.475465", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:54:26.739492", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:54:26.753727", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:54:26.760415", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:55:15.115893", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:55:15.135413", "level": "INFO", "message": "Method: GET Path: /api/v1/jets Status: 307 Duration: 0.00s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:55:15.170332", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:55:15.180709", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:55:15.186624", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:55:15.193263", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:55:15.204263", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/ Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:55:15.209739", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
+{"timestamp": "2025-06-09T00:55:17.652020", "level": "INFO", "message": "Database session opened", "module": "database", "function": "get_db", "line": 33}
+{"timestamp": "2025-06-09T00:55:17.660374", "level": "INFO", "message": "Method: GET Path: /api/v1/jets/search Status: 200 Duration: 0.01s", "module": "main", "function": "log_requests", "line": 47}
+{"timestamp": "2025-06-09T00:55:17.670807", "level": "INFO", "message": "Database session closed", "module": "database", "function": "get_db", "line": 40}
