@@ -1,42 +1,36 @@
 import axios from 'axios';
 import { logger } from '@/utils/logger';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
-
-logger.info('API: Initializing with base URL:', API_BASE_URL);
-
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 // Add request interceptor for authentication
-api.interceptors.request.use((config) => {
-  logger.info('API: Making request to:', config.url);
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-// Add response interceptor for logging
-api.interceptors.response.use(
-  (response) => {
-    logger.info(`API Response [${response.config.method?.toUpperCase()}] ${response.config.url}:`, {
-      status: response.status,
-      data: response.data
-    });
-    return response;
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   },
   (error) => {
-    logger.error(`API Error [${error.config?.method?.toUpperCase()}] ${error.config?.url}:`, {
-      status: error.response?.status,
-      data: error.response?.data,
-      message: error.message
-    });
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized access
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );
