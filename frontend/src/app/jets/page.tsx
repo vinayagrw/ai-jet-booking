@@ -64,7 +64,17 @@ export default function JetsPage() {
       ) : jets.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {jets.map((jet) => (
-            <JetCard key={jet.id} jet={jet} />
+            <JetCard
+              key={jet.id}
+              id={jet.id}
+              name={jet.name}
+              model={jet.model}
+              manufacturer={jet.manufacturer}
+              imageUrl={jet.imageUrl}
+              price={jet.price_per_hour}
+              capacity={jet.capacity}
+              range={jet.range}
+            />
           ))}
         </div>
       ) : (
