@@ -1,166 +1,293 @@
 # AI Jet Booking Platform
 
-A modern web application for private jet booking and management, built with FastAPI and Next.js.
-
-## Project Overview
-
-This platform provides a comprehensive solution for private jet booking, including features for jet management, booking, membership programs, and ownership shares.
-
-## Tech Stack
-
-### Backend
-- **Framework**: FastAPI (Python)
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Authentication**: JWT-based authentication
-- **API Documentation**: OpenAPI/Swagger
-- **Database Migrations**: Alembic
-- **Logging**: Custom logging implementation
-
-### Frontend
-- **Framework**: Next.js 14
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: Headless UI
-- **Icons**: Heroicons
-- **Animation**: Framer Motion
-- **HTTP Client**: Axios
-
-## Features
-
-### Core Features
-- User authentication and authorization
-- Jet browsing and searching
-- Booking management
-- Membership program
-- Ownership shares management
-- Admin dashboard
-- Contact system
-- Category management
-- Comprehensive logging system
-
-### API Endpoints
-- `/api/v1/auth` - Authentication endpoints
-- `/api/v1/jets` - Jet management
-- `/api/v1/bookings` - Booking operations
-- `/api/v1/memberships` - Membership management
-- `/api/v1/ownership-shares` - Ownership share operations
-- `/api/v1/admin` - Admin operations
-- `/api/v1/contact` - Contact management
-- `/api/v1/categories` - Category management
-- `/api/v1/logs` - System logs
-
-## Getting Started
-
-### Prerequisites
-- Python 3.8+
-- Node.js 18+
-- pnpm (recommended) or npm
-- PostgreSQL 12+
-
-### Backend Setup
-1. Create and activate a virtual environment:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   ```
-
-2. Install dependencies:
-   ```bash
-   pip install -r backend/requirements.txt
-   pip install uvicorn
-   pip install "pydantic[email]"
-   ```
-
-3. Set up PostgreSQL:
-   - Install PostgreSQL if not already installed
-   - Create a new database named `ai_jet_booking`
-   - Configure database connection in `backend/database.py`:
-     ```python
-     DATABASE_URL = "postgresql://postgres:admin@localhost:5432/ai_jet_booking"
-     ```
-   - Make sure PostgreSQL is running on port 5432
-   - Run database migrations:
-     ```bash
-     cd backend
-     alembic upgrade head
-     ```
-
-4. Generate a secret key:
-   ```bash
-   python generate_secret_key.py
-   ```
-
-5. Start the backend server:
-   ```bash
-   uvicorn backend.main:app --reload
-   ```
-
-### Environment Variables
-Create a `.env` file in the root directory with the following variables:
-```
-DATABASE_URL=postgresql://postgres:admin@localhost:5432/ai_jet_booking
-SECRET_KEY=your_generated_secret_key
-DEBUG=True
-```
-
-### Frontend Setup
-1. Install dependencies:
-   ```bash
-   cd frontend
-   pnpm install
-   ```
-
-2. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-
-### Running Both Services
-Use the provided scripts:
-- Windows: `run_all.bat`
-- Unix/Mac: `run_all.sh`
-
-## Development
-
-### Backend Development
-- The backend uses FastAPI's automatic API documentation
-- Access the API docs at `http://localhost:8000/docs`
-- Database migrations are managed through Alembic
-- Logs are stored in the `backend/logs` directory
-- PostgreSQL connection settings can be configured in `backend/database.py`
-
-### Frontend Development
-- Built with Next.js for optimal performance
-- Uses TypeScript for type safety
-- Styled with Tailwind CSS for responsive design
-- Implements modern UI components with Headless UI
+A modern web application for booking private jets, built with Next.js, FastAPI, and PostgreSQL.
 
 ## Project Structure
 
 ```
-.
-├── backend/
-│   ├── routers/         # API route handlers
-│   ├── models/          # Database models
-│   ├── schemas/         # Pydantic schemas
-│   ├── utils/           # Utility functions
-│   ├── logs/            # Application logs
-│   └── alembic/         # Database migrations
-├── frontend/
-│   ├── src/            # Source code
-│   ├── public/         # Static assets
-│   └── .next/          # Build output
-└── scripts/            # Utility scripts
+ai-jet-booking/
+├── frontend/                 # Next.js frontend application
+│   ├── src/
+│   │   ├── app/             # Next.js app directory (Entry Point)
+│   │   │   ├── page.tsx     # Home page
+│   │   │   ├── jets/        # Jets listing and details
+│   │   │   │   ├── page.tsx # Jets listing page
+│   │   │   │   └── [id]/    # Individual jet details
+│   │   │   │       └── page.tsx
+│   │   │   ├── bookings/    # Booking management
+│   │   │   │   └── page.tsx
+│   │   │   └── admin/       # Admin dashboard
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── components/      # React components
+│   │   │   ├── JetCard.tsx  # Jet display card
+│   │   │   ├── SearchFilters.tsx
+│   │   │   ├── BookingForm.tsx
+│   │   │   └── AdminDashboard.tsx
+│   │   │
+│   │   ├── services/        # API service functions
+│   │   │   ├── jetService.ts    # Jet-related API calls
+│   │   │   ├── bookingService.ts
+│   │   │   └── authService.ts
+│   │   │
+│   │   ├── types/          # TypeScript type definitions
+│   │   │   └── index.ts     # Shared type definitions
+│   │   │
+│   │   └── utils/          # Utility functions
+│   │       ├── api.ts       # API configuration
+│   │       └── auth.ts      # Authentication utilities
+│   │
+│   ├── public/             # Static assets
+│   │   └── images/         # Image assets
+│   │
+│   └── package.json        # Frontend dependencies
+│
+├── backend/                 # FastAPI backend application
+│   ├── main.py             # FastAPI application entry point
+│   │   ├── FastAPI app initialization
+│   │   ├── Middleware setup
+│   │   ├── Router registration
+│   │   └── Event handlers
+│   │
+│   ├── routers/            # API route handlers
+│   │   ├── jets.py         # Jet-related endpoints
+│   │   │   ├── GET /jets/          # List all jets
+│   │   │   ├── GET /jets/{id}      # Get jet details
+│   │   │   ├── POST /jets/         # Create new jet
+│   │   │   └── PUT /jets/{id}      # Update jet
+│   │   │
+│   │   ├── bookings.py     # Booking endpoints
+│   │   │   ├── GET /bookings/      # List bookings
+│   │   │   ├── POST /bookings/     # Create booking
+│   │   │   └── PUT /bookings/{id}  # Update booking
+│   │   │
+│   │   └── auth.py         # Authentication endpoints
+│   │       ├── POST /auth/login    # User login
+│   │       └── POST /auth/register # User registration
+│   │
+│   ├── models/             # Database models
+│   │   ├── jet.py          # Jet model
+│   │   │   ├── Jet class
+│   │   │   └── JetCategory class
+│   │   │
+│   │   ├── booking.py      # Booking model
+│   │   │   └── Booking class
+│   │   │
+│   │   └── user.py         # User model
+│   │       └── User class
+│   │
+│   ├── schemas.py          # Pydantic schemas
+│   │   ├── Jet schemas
+│   │   ├── Booking schemas
+│   │   └── User schemas
+│   │
+│   ├── crud.py             # Database operations
+│   │   ├── Jet CRUD operations
+│   │   ├── Booking CRUD operations
+│   │   └── User CRUD operations
+│   │
+│   ├── database.py         # Database configuration
+│   │   ├── Database connection
+│   │   └── Session management
+│   │
+│   ├── utils/              # Utility functions
+│   │   ├── auth_utils.py   # Authentication utilities
+│   │   └── logger.py       # Logging configuration
+│   │
+│   └── alembic/            # Database migrations
+│       ├── versions/       # Migration files
+│       └── env.py          # Migration environment
+│
+├── .venv/                  # Python virtual environment
+├── .vscode/               # VS Code configuration
+├── run_all.sh             # Script to run both frontend and backend
+└── README.md              # Project documentation
+```
+
+## Application Flow
+
+### Frontend Flow
+1. Entry Point: `frontend/src/app/page.tsx`
+   - Renders home page
+   - Provides navigation to other sections
+
+2. Jet Listing: `frontend/src/app/jets/page.tsx`
+   - Uses `JetCard` component to display jets
+   - Implements `SearchFilters` for filtering
+   - Calls `jetService` for data fetching
+
+3. Jet Details: `frontend/src/app/jets/[id]/page.tsx`
+   - Displays detailed jet information
+   - Shows booking form
+   - Uses `bookingService` for booking operations
+
+### Backend Flow
+1. Entry Point: `backend/main.py`
+   - Initializes FastAPI application
+   - Sets up middleware and routers
+   - Configures event handlers
+
+2. Request Flow:
+   - Request → Router → CRUD Operation → Database
+   - Response → Schema Validation → Client
+
+3. Authentication Flow:
+   - Request → Auth Router → Auth Utils → JWT Generation
+   - Protected Routes → JWT Validation → User Verification
+
+## Features
+
+- Modern, responsive UI built with Next.js and Tailwind CSS
+- Real-time jet availability and booking system
+- Advanced search and filtering capabilities
+- Secure authentication and authorization
+- Detailed jet specifications and images
+- Booking management system
+- Admin dashboard for jet management
+
+## Tech Stack
+
+### Frontend
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- React Query
+- Axios
+- React Hook Form
+- Zod
+
+### Backend
+- FastAPI
+- PostgreSQL
+- SQLAlchemy
+- Alembic
+- Pydantic
+- Python 3.11+
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- Python 3.11+
+- PostgreSQL 15+
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/ai-jet-booking.git
+cd ai-jet-booking
+```
+
+2. Set up the backend:
+```bash
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+cd backend
+pip install -r requirements.txt
+
+# Set up the database
+./create_database.sh
+
+# Run migrations
+alembic upgrade head
+```
+
+3. Set up the frontend:
+```bash
+cd frontend
+npm install
+```
+
+4. Start the development servers:
+```bash
+# From the root directory
+./run_all.sh
+```
+
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
+- API Documentation: http://localhost:8000/docs
+
+## Development
+
+### Frontend Development
+```bash
+cd frontend
+npm run dev
+```
+
+### Backend Development
+```bash
+cd backend
+uvicorn main:app --reload
+```
+
+### Database Migrations
+```bash
+cd backend
+alembic revision --autogenerate -m "description"
+alembic upgrade head
+```
+
+## Testing
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+### Backend Tests
+```bash
+cd backend
+pytest
+```
+
+## Deployment
+
+### Frontend Deployment
+```bash
+cd frontend
+npm run build
+```
+
+### Backend Deployment
+```bash
+cd backend
+uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+
+## Application UI
+
+### Home Page
+![Home Page](.gitbook/home.png)
+
+### Admin Dashboard
+![Admin Dashboard](.gitbook/admin.png)
+
+### User Account
+![User Account](.gitbook/account.png)
