@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "../components/Footer";
 import { Providers } from "./providers";
 import { Logger } from "@/components/Logger";
+import ChatEmbed from '../components/ChatEmbed';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({
           <Navigation />
           <main>{children}</main>
           <Footer />
+          <ChatEmbed />
         </Providers>
       </body>
     </html>

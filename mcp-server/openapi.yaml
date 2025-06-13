@@ -1,0 +1,422 @@
+openapi: 3.0.0
+info:
+  title: Jet Booking MCP API
+  description: API for managing private jet bookings, fleet, and memberships
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@jetbooking.com
+
+servers:
+  - url: http://localhost:3010
+    description: Local development server
+
+paths:
+  /mcp:
+    post:
+      summary: Execute MCP tool
+      description: Execute a specific tool with provided parameters
+      operationId: executeTool
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MCPRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MCPResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Tool not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /health:
+    get:
+      summary: Health check
+      description: Check if the server is running
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+components:
+  schemas:
+    MCPRequest:
+      type: object
+      required:
+        - tool
+        - params
+      properties:
+        tool:
+          type: string
+          enum:
+            - searchJets
+            - createBooking
+            - getBookingStatus
+            - updateFleetJet
+            - manageMembership
+            - generateReport
+            - sendNotification
+          description: The tool to execute
+        params:
+          type: object
+          description: Parameters for the tool
+          oneOf:
+            - $ref: '#/components/schemas/SearchJetsParams'
+            - $ref: '#/components/schemas/CreateBookingParams'
+            - $ref: '#/components/schemas/GetBookingStatusParams'
+            - $ref: '#/components/schemas/UpdateFleetJetParams'
+            - $ref: '#/components/schemas/ManageMembershipParams'
+            - $ref: '#/components/schemas/GenerateReportParams'
+            - $ref: '#/components/schemas/SendNotificationParams'
+
+    MCPResponse:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+          description: Whether the operation was successful
+        data:
+          type: object
+          description: Response data (if successful)
+        error:
+          type: string
+          description: Error message (if unsuccessful)
+        details:
+          type: object
+          description: Additional error details (if unsuccessful)
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+        details:
+          type: object
+          description: Additional error details
+
+    Jet:
+      type: object
+      required:
+        - id
+        - name
+        - manufacturer
+        - model
+        - category_id
+        - year
+        - capacity
+        - range
+        - status
+        - location
+        - price_per_hour
+        - imageUrl
+        - amenities
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          example: jet_1
+        name:
+          type: string
+          example: Gulfstream G650
+        manufacturer:
+          type: string
+          example: Gulfstream Aerospace
+        model:
+          type: string
+          example: G650
+        category_id:
+          type: string
+          enum: [ultra-long-range, light, midsize, heavy]
+          example: ultra-long-range
+        year:
+          type: integer
+          example: 2023
+        capacity:
+          type: integer
+          example: 19
+        range:
+          type: integer
+          example: 7000
+        status:
+          type: string
+          enum: [available, maintenance, booked]
+          example: available
+        location:
+          type: string
+          example: KJFK
+        price_per_hour:
+          type: number
+          example: 12000
+        imageUrl:
+          type: string
+          example: https://example.com/g650.jpg
+        amenities:
+          type: array
+          items:
+            type: string
+          example: [WiFi, Conference Room, Bedroom]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Booking:
+      type: object
+      required:
+        - id
+        - jet_id
+        - user_id
+        - departure
+        - arrival
+        - departure_time
+        - arrival_time
+        - passengers
+        - status
+        - total_price
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          example: booking_123
+        jet_id:
+          type: string
+          example: jet_1
+        user_id:
+          type: string
+          example: user_1
+        departure:
+          type: string
+          example: JFK
+        arrival:
+          type: string
+          example: LAX
+        departure_time:
+          type: string
+          format: date-time
+        arrival_time:
+          type: string
+          format: date-time
+        passengers:
+          type: integer
+          example: 4
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled, completed]
+          example: confirmed
+        total_price:
+          type: number
+          example: 36000
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    SearchJetsParams:
+      type: object
+      required:
+        - departure
+        - arrival
+        - date
+      properties:
+        departure:
+          type: string
+          example: JFK
+        arrival:
+          type: string
+          example: LAX
+        date:
+          type: string
+          format: date
+          example: 2024-03-20
+        jetSize:
+          type: string
+          enum: [ultra-long-range, light, midsize, heavy]
+          example: ultra-long-range
+        passengers:
+          type: integer
+          example: 4
+        priceRange:
+          type: object
+          properties:
+            min:
+              type: number
+              example: 5000
+            max:
+              type: number
+              example: 15000
+
+    CreateBookingParams:
+      type: object
+      required:
+        - jet_id
+        - user_id
+        - departure
+        - arrival
+        - departure_time
+        - arrival_time
+        - passengers
+      properties:
+        jet_id:
+          type: string
+          example: jet_1
+        user_id:
+          type: string
+          example: user_1
+        departure:
+          type: string
+          example: JFK
+        arrival:
+          type: string
+          example: LAX
+        departure_time:
+          type: string
+          format: date-time
+          example: 2024-03-20T10:00:00Z
+        arrival_time:
+          type: string
+          format: date-time
+          example: 2024-03-20T13:00:00Z
+        passengers:
+          type: integer
+          example: 4
+
+    GetBookingStatusParams:
+      type: object
+      required:
+        - booking_id
+      properties:
+        booking_id:
+          type: string
+          example: booking_123
+
+    UpdateFleetJetParams:
+      type: object
+      required:
+        - jet_id
+        - status
+      properties:
+        jet_id:
+          type: string
+          example: jet_1
+        status:
+          type: string
+          enum: [available, maintenance, booked]
+          example: maintenance
+        location:
+          type: string
+          example: KJFK
+
+    ManageMembershipParams:
+      type: object
+      required:
+        - user_id
+        - action
+      properties:
+        user_id:
+          type: string
+          example: user_1
+        action:
+          type: string
+          enum: [create, update, cancel]
+          example: create
+        type:
+          type: string
+          enum: [standard, premium, elite]
+          example: premium
+        benefits:
+          type: array
+          items:
+            type: string
+          example: [Priority Booking, 24/7 Support]
+
+    GenerateReportParams:
+      type: object
+      required:
+        - type
+        - start_date
+        - end_date
+      properties:
+        type:
+          type: string
+          enum: [booking, revenue, membership, usage]
+          example: booking
+        start_date:
+          type: string
+          format: date
+          example: 2024-01-01
+        end_date:
+          type: string
+          format: date
+          example: 2024-03-31
+        filters:
+          type: object
+          additionalProperties: true
+
+    SendNotificationParams:
+      type: object
+      required:
+        - recipient
+        - type
+        - subject
+        - content
+      properties:
+        recipient:
+          type: string
+          example: user_1
+        type:
+          type: string
+          enum: [booking, membership, system]
+          example: booking
+        subject:
+          type: string
+          example: Booking Confirmation
+        content:
+          type: string
+          example: Your booking has been confirmed
+        priority:
+          type: string
+          enum: [low, medium, high]
+          example: high 
