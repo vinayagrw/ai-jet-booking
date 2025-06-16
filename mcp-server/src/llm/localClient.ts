@@ -175,11 +175,6 @@ INSTRUCTIONS:
 8. Your response MUST be a valid JSON object with 'tool' and 'params' fields.
 9. DO NOT make up parameters that weren't in the original request.
 
-IMPORTANT: For the request "Show my bookings", ALWAYS use:
-{
-  "tool": "listUserBookings",
-  "params": {}
-}
 
 CURRENT REQUEST: "${prompt}"
 

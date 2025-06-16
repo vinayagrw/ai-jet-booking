@@ -2,6 +2,20 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000/api/v1';
 
+// Configure axios to include the auth token in all requests
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -74,6 +88,20 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  async getCurrentUser(): Promise<UserInfo> {
+    const response = await axios.get(`${API_URL}/users/me`);
+    if (response.data) {
+      const userInfo: UserInfo = {
+        id: response.data.id,
+        email: response.data.email,
+        name: response.data.name
+      };
+      localStorage.setItem('user', JSON.stringify(userInfo));
+      return userInfo;
+    }
+    throw new Error('Failed to fetch user data');
   }
 }
 
