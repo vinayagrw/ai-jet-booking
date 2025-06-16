@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, TextField, Button, List, ListItem, Paper } from '@mui/material';
 
 const ChatPage: React.FC = () => {
@@ -11,32 +11,62 @@ const ChatPage: React.FC = () => {
     if (input.trim() === '') return;
     setMessages([...messages, { from: 'user', text: input }]);
     setInput('');
-    // Here you can add logic to send the message to your backend or AI
   };
 
+  // Make sure body has no extra margin/padding
+  useEffect(() => {
+    document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    document.body.style.height = '100vh';
+    document.documentElement.style.height = '100vh';
+    return () => {
+      document.body.style.margin = '';
+      document.body.style.padding = '';
+      document.body.style.height = '';
+      document.documentElement.style.height = '';
+    };
+  }, []);
+
   return (
-    <Box flex={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center" height="100%" p={2}>
-      <Paper elevation={0} sx={{ width: 400, maxHeight: 500, overflow: 'hidden', borderRadius: 2, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+    <Box sx={{ width: '100%', height: '100vh', p: 2, boxSizing: 'border-box' }}>
+      <Paper
+        elevation={3}
+        sx={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: 2,
+          overflow: 'hidden'
+        }}
+      >
+        {/* Header */}
         <Box p={2} bgcolor="primary.main" color="white">
           <Typography variant="subtitle1" fontWeight="bold">Chat</Typography>
         </Box>
-        <List sx={{ width: '100%', maxHeight: 400, overflow: 'auto', p: 2 }}>
-          {messages.map((msg, idx) => (
-            <ListItem key={idx} sx={{ justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start', mb: 1 }}>
-              <Box
-                sx={{
-                  bgcolor: msg.from === 'user' ? 'primary.main' : 'grey.100',
-                  color: msg.from === 'user' ? 'white' : 'text.primary',
-                  p: 1.5,
-                  borderRadius: 2,
-                  maxWidth: '80%',
-                }}
-              >
-                <Typography variant="body1">{msg.text}</Typography>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
+
+        {/* Message List */}
+        <Box sx={{ flex: 1, overflowY: 'auto', px: 2, py: 1 }}>
+          <List sx={{ p: 0 }}>
+            {messages.map((msg, idx) => (
+              <ListItem key={idx} sx={{ justifyContent: msg.from === 'user' ? 'flex-end' : 'flex-start', p: 0, mb: 1 }}>
+                <Box
+                  sx={{
+                    bgcolor: msg.from === 'user' ? 'primary.main' : 'grey.200',
+                    color: msg.from === 'user' ? 'white' : 'black',
+                    p: 1.5,
+                    borderRadius: 2,
+                    maxWidth: '75%',
+                  }}
+                >
+                  <Typography variant="body2">{msg.text}</Typography>
+                </Box>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        {/* Input Area */}
         <Box display="flex" p={2} borderTop={1} borderColor="divider">
           <TextField
             fullWidth
@@ -55,4 +85,4 @@ const ChatPage: React.FC = () => {
   );
 };
 
-export default ChatPage; 
+export default ChatPage;

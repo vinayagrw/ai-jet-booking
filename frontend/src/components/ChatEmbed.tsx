@@ -14,7 +14,7 @@ const ChatEmbed: React.FC = () => {
             color: 'white',
             border: 'none',
             borderRadius: 50,
-            padding: '12px 24px',
+            padding: '12px 12px',
             cursor: 'pointer',
             boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
             transition: 'transform 0.2s ease-in-out',
@@ -34,8 +34,8 @@ const ChatEmbed: React.FC = () => {
             borderRadius: 12,
             boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
             position: 'relative',
-            width: 700,
-            height: 1000,
+            width: 400, // smaller width
+            height: 550, // smaller height
             overflow: 'hidden',
             transition: 'all 0.3s ease-in-out',
           }}
@@ -44,8 +44,8 @@ const ChatEmbed: React.FC = () => {
             onClick={() => setIsOpen(false)}
             style={{
               position: 'absolute',
-              top: 12,
-              right: 12,
+              top: 8,
+              right: 8,
               border: 'none',
               background: 'none',
               fontSize: 20,
@@ -58,7 +58,7 @@ const ChatEmbed: React.FC = () => {
             ✕
           </button>
           <iframe
-            src="http://localhost:5173/chat"
+            src="http://localhost:5173/chat" // or /chat-embed if custom route
             width="100%"
             height="100%"
             style={{ border: 'none', borderRadius: 12 }}
@@ -70,4 +70,4 @@ const ChatEmbed: React.FC = () => {
   );
 };
 
-export default ChatEmbed; 
+export default ChatEmbed;

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start backend in a new terminal window/process
-(source ./.venv/Scripts/activate && ) &
+(source ./.venv/Scripts/activate && uvicorn backend.main:app --reload) &
 BACKEND_PID=$!
 
 echo "Backend started with PID: $BACKEND_PID"
