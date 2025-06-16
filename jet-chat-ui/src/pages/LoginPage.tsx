@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Alert } from '@mui/material';
 import { authService } from '../services/auth';
 
@@ -8,15 +8,22 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || '/chat';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     try {
-      await authService.login({ email, password });
-      navigate('/chat');
+      const response = await authService.login({ email, password });
+      if (response.access_token) {
+        navigate(from, { replace: true });
+      } else {
+        throw new Error('Invalid response from server');
+      }
     } catch (err: any) {
-      setError('Login failed. Please check your credentials.');
+      console.error('Login error:', err);
+      setError(err.response?.data?.detail || 'Login failed. Please check your credentials.');
     }
   };
 

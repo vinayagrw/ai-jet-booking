@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Depends, HTTPException, Request, Path
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from backend.routers import auth, jets, bookings, memberships, ownership_shares, admin, contact, categories, logs, users
+from backend.routers import auth, jets, bookings, memberships, ownership_shares, admin, contact, categories, logs, users, chat
 from backend.database import engine, Base, get_db
 from backend.logger import api_logger
 from sqlalchemy.orm import Session
@@ -39,10 +39,16 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend URL
+    allow_origins=[
+        "http://localhost:3000",  # Default React port
+        "http://localhost:5173",  # Vite default port
+        "http://127.0.0.1:5173",  # Vite default alternative
+        "http://localhost:3010"   # MCP server
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
 # Middleware for request logging
@@ -70,6 +76,8 @@ async def error_handling(request: Request, call_next):
 
 # Include routers
 app.include_router(auth.router, prefix="/api/v1", tags=["Auth"])
+app.include_router(users.router, prefix="/api/v1", tags=["Users"])
+app.include_router(chat.router, prefix="/api/v1", tags=["Chat"])
 app.include_router(jets.router, prefix="/api/v1", tags=["Jets"])
 app.include_router(bookings.router, prefix="/api/v1", tags=["Bookings"])
 app.include_router(memberships.router, prefix="/api/v1", tags=["Memberships"])

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { config } from '../config.js';
+import { ToolHandlerContext } from './index.js';
 
 export const createBooking = {
   name: 'createBooking',
@@ -30,22 +31,40 @@ export const createBooking = {
     },
     required: ['jet_id', 'user_id', 'departure', 'arrival', 'passengers']
   },
-  handler: async (params: any) => {
+  handler: async (params: any & { context?: ToolHandlerContext }) => {
+    // Extract context from params and then remove it to avoid sending it in the request
+    const { context, ...bookingParams } = params;
+    
+    // Get token from either direct context or nested in res.locals
+    const token = context?.token || context?.res?.locals?.token;
+    if (!token) {
+      console.error('No authentication token found in context:', context);
+      throw new Error('No authentication token found');
+    }
     try {
       const response = await axios.post(
-        `${config.backend.baseUrl}${config.backend.endpoints.bookings}`,
-        params,
+        `${config.backend.baseUrl}/bookings`,
+        bookingParams,
         {
           headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
-            [config.backend.auth.headerName]: `${config.backend.auth.headerPrefix} ${config.backend.auth.token}`
+            'Accept': 'application/json'
           }
         }
       );
-      return { success: true, data: response.data };
-    } catch (error) {
+      return { 
+        success: true, 
+        data: response.data,
+        message: 'Booking created successfully' 
+      };
+    } catch (error: any) {
       console.error('Error creating booking:', error);
-      return { success: false, error: 'Failed to create booking' };
+      return { 
+        success: false, 
+        error: 'Failed to create booking',
+        details: error.response?.data?.detail || error.message || 'Unknown error'
+      };
     }
   }
 }; 

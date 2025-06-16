@@ -11,12 +11,19 @@ export interface RegisterData extends LoginCredentials {
   name: string;
 }
 
+export interface UserInfo {
+  email: string;
+  name: string;
+  id: string;
+}
+
 export interface AuthResponse {
   access_token: string;
   token_type: string;
+  user: UserInfo;
 }
 
-class AuthService {
+export class AuthService {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const formData = new URLSearchParams();
     formData.append('username', credentials.email);
@@ -28,11 +35,23 @@ class AuthService {
       },
     });
 
-    if (response.data.access_token) {
-      localStorage.setItem('token', response.data.access_token);
+    const responseData = response.data;
+    
+    if (responseData.access_token) {
+      localStorage.setItem('token', responseData.access_token);
+      
+      // Create user info from the response data
+      const userInfo: UserInfo = {
+        id: responseData.user?.id || '',
+        email: responseData.user?.email || credentials.email,
+        name: responseData.user?.name || credentials.email.split('@')[0]
+      };
+      
+      localStorage.setItem('user', JSON.stringify(userInfo));
+      return { ...responseData, user: userInfo };
     }
 
-    return response.data;
+    throw new Error('No access token found in response');
   }
 
   async register(data: RegisterData): Promise<void> {
@@ -41,10 +60,16 @@ class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 
   getToken(): string | null {
     return localStorage.getItem('token');
+  }
+
+  getUserInfo(): UserInfo | null {
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
   }
 
   isAuthenticated(): boolean {
