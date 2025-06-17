@@ -1,11 +1,24 @@
-# React + TypeScript + Vite
+# AI Jet Booking Chat UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React-based chat interface for the AI Jet Booking platform, built with TypeScript, Vite, and Material-UI.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Real-time chat interface with AI assistant
+- Responsive design for all devices
+- Beautiful message bubbles with smooth animations
+- Support for rich content display (text, data tables, flight info)
+- User authentication and session management
+- Dark/light theme support
+
+## 🛠 Tech Stack
+
+- React 18 with TypeScript
+- Vite for fast development and building
+- Material-UI (MUI) for UI components
+- Axios for API requests
+- React Router for navigation
+- JWT for authentication
 
 ## Expanding the ESLint configuration
 

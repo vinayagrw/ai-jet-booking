@@ -1,6 +1,224 @@
-# AI Jet Booking Platform
+# 🛩️ AI-Powered Private Jet Booking MVP
 
-A modern web application for booking private jets, built with Next.js, FastAPI, and PostgreSQL.
+A weekend-built proof-of-concept that combines traditional flight booking with conversational AI. The system allows users to search, book, and manage private jet travel using natural language, powered by a local LLM and Dust MCP agents.
+
+## ⚙️ System Architecture
+
+```
+Frontend (Next.js + Tailwind CSS)
+│
+├── Login/Register, Dashboard, AI Chatbot
+│
+▼
+BFF (API Layer - Node.js)
+│
+├── Auth Routes: /api/auth/*
+├── Booking Routes: /api/bookings/*
+├── MCP Proxy: /api/agent/chat
+│
+▼
+Dust MCP Server (Local Node.js)
+│
+├── Agent: ai_concierge
+├── Tools: searchJets, getBookingStatus, createBooking
+│
+▼
+Local LLM (Ollama w/ Mistral or LM Studio)
+```
+
+## 🤖 AI, LLM & NLP Capabilities
+
+### AI Chatbot (Frontend)
+- Embedded in the UI as a persistent chat window
+- Accepts natural language queries like:
+  - "Book a light jet from Mumbai to Goa this Friday"
+  - "Show me my last 3 bookings"
+  - "Cancel my flight tomorrow at 9AM"
+- Chat assistant performs:
+  - Intent detection (via NLP)
+  - Workflow orchestration (via MCP)
+  - Context-aware follow-ups
+
+### Local LLM (Ollama / LM Studio)
+- Used for:
+  - Natural language understanding
+  - Summarization
+  - Action clarification
+- Runs fully offline, no external API keys required
+
+### Dust MCP Agent
+- Agent: `ai_concierge`
+- Tools:
+  - `searchJets` — queries real-time or mock fleet data
+  - `createBooking` — reserves flights
+  - `getBookingStatus` — retrieves current status
+  - `updateFleetJet` — admin-only, modify jet info
+- Receives messages and decides which tool to call based on LLM-derived intent
+
+## 🧩 Key Features
+
+### User Functionality
+- ✅ Login & registration (JWT-based)
+- 📋 Booking dashboard showing current & past bookings
+- 💬 AI-powered chat for:
+  - Jet search and booking
+  - Status lookup
+  - Flight changes and cancellations
+
+### Admin Functionality
+- ✈️ Add/edit jets with NLP commands
+- 🧾 Manage memberships & fractional shares
+- 📊 Analytics and reporting
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- Python 3.10+
+- PostgreSQL 13+
+- [Ollama](https://ollama.ai) or LM Studio (for local LLM)
+
+### 1. Set up the Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: .\venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### 2. Set up MCP Server
+```bash
+cd mcp-server
+npm install
+npm run dev
+```
+
+### 3. Start Local LLM
+```bash
+ollama run mistral
+```
+
+### 4. Start Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🗂️ Project Structure
+
+```
+/
+├── frontend/           # Next.js frontend application
+│   ├── components/     # React components
+│   ├── pages/          # Next.js pages
+│   └── styles/         # Global styles
+│
+├── backend/           # FastAPI backend
+│   ├── app/            # Application code
+│   ├── migrations/     # Database migrations
+│   └── tests/          # Backend tests
+│
+├── mcp-server/        # Dust MCP server
+│   ├── agents/         # MCP agents
+│   └── tools/          # Custom tools
+│
+└── README.md          # This file
+```
+
+## 🤖 Sample User Flows
+
+### Booking a Jet
+1. User registers and logs in
+2. Opens chat and says: "Find me a jet from Delhi to Jaipur next Friday"
+3. Agent returns fleet options
+4. User says: "Book the second one"
+5. Booking confirmation shown and added to dashboard
+
+### Admin Workflow
+1. Admin logs in
+2. Uses chat to add new jet: "Add Falcon 900 jet with ID F-9001, seats 12, rate ₹130k/hr"
+3. MCP confirms fleet addition
+
+### Analytics Query
+1. Admin types: "Show average hours used by Platinum members last 30 days"
+2. Agent compiles report from DB and replies with summary
+
+## 📬 Workflow Automation
+- Email triggers for:
+  - Booking confirmations
+  - Membership renewals
+  - Payment receipts
+- Smart notifications using SMTP or SES via MCP orchestration
+
+## 🛠 Tech Stack
+
+- **Frontend**: Next.js, TypeScript, Tailwind CSS
+- **Backend**: FastAPI, Python, SQLAlchemy
+- **AI**: Local LLM (Mistral), Dust MCP
+- **Database**: PostgreSQL
+- **Auth**: JWT
+
+## 📄 License
+
+MIT - See [LICENSE](LICENSE) for more details.
+
+## 🤖 AI & Automation
+
+### Dust MCP
+- **Agent**: `ai_concierge`
+- **Tools**: 
+  - `searchJets` - Find available jets based on criteria
+  - `createBooking` - Create new flight bookings
+  - `updateFleetJet` - Update jet fleet information
+  - `getBookingStatus` - Check status of existing bookings
+- **Function**: Routes user intent to appropriate tools and executes workflows.
+
+### Local LLM Integration
+- Powered by [Ollama](https://ollama.com) or LM Studio
+- Natural language understanding for multi-turn conversations
+- Context-aware responses to user queries
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ for frontend and MCP server
+- Python 3.8+ for backend services
+- PostgreSQL 13+ for database
+- [Ollama](https://ollama.com) or LM Studio (running `mistral` model)
+
+### 1. Start Dust MCP Server
+```bash
+cd mcp-server/
+npm install
+npm run dev
+```
+
+### 2. Start Backend
+```bash
+cd backend/
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### 3. Start Frontend
+```bash
+cd jet-chat-ui/
+npm install
+npm run dev
+```
+
+## 🎬 Example Workflow
+
+1. User opens the chat interface
+2. Enters: "Book a mid-size jet from Delhi to Jaipur"
+3. AI agent responds with available options
+4. User confirms: "Yes, book it"
+5. System processes booking and displays confirmation
+6. Booking appears in user's dashboard
 
 ## Project Structure
 

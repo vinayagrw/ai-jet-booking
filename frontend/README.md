@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ Jet Booking Platform - Frontend
 
-## Getting Started
+A modern, responsive web application for booking private jets, built with Next.js, TypeScript, and Tailwind CSS. This frontend application provides an intuitive user interface for searching, booking, and managing private jet flights.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **User Authentication**
+  - Secure JWT-based authentication
+  - User registration and login
+  - Protected routes
+
+- **Flight Search & Booking**
+  - Advanced search with filters
+  - Real-time availability
+  - Interactive booking form
+  - Booking management
+
+- **Admin Dashboard**
+  - Fleet management
+  - User management
+  - Booking analytics
+
+- **Responsive Design**
+  - Mobile-first approach
+  - Cross-browser compatibility
+  - Optimized for all screen sizes
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18.0.0 or later
+- npm, yarn, or pnpm
+- Backend API server (see backend README)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/ai-jet-booking.git
+   cd ai-jet-booking/frontend
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+   NEXTAUTH_SECRET=your-secret-here
+   NEXTAUTH_URL=http://localhost:3000
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🛠 Project Structure
+
+```
+frontend/
+├── app/                    # App router
+│   ├── (auth)/             # Authentication pages
+│   ├── admin/              # Admin dashboard
+│   ├── api/                # API routes
+│   ├── bookings/           # Booking management
+│   ├── jets/               # Jet listings
+│   └── layout.tsx          # Root layout
+├── components/             # Reusable components
+│   ├── ui/                 # UI components
+│   ├── forms/              # Form components
+│   └── layout/             # Layout components
+├── lib/                    # Utility functions
+├── public/                 # Static assets
+├── styles/                 # Global styles
+└── types/                  # TypeScript types
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧪 Testing
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Run tests with:
+```bash
+npm test
+# or
+yarn test
+# or
+pnpm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Deployment
 
-## Learn More
+### Vercel (Recommended)
 
-To learn more about Next.js, take a look at the following resources:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fai-jet-booking)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Docker
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Build the Docker image:
+```bash
+docker build -t jet-booking-frontend .
+```
 
-## Deploy on Vercel
+Run the container:
+```bash
+docker run -p 3000:3000 jet-booking-frontend
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📚 Documentation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
