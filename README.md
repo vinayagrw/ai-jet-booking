@@ -368,3 +368,8 @@ pytest
 #### Show me my bookings
 
 ![Show me my bookings](.gitbook/ai_chat.png)
+
+#### Video Demo
+
+![Video Demo](.gitbook\AIJetBooking.mp4)
+
