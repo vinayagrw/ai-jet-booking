@@ -40,10 +40,10 @@ Local LLM (Ollama w/ Mistral or LM Studio)
   - Context-aware follow-ups
 
 ### Local LLM (Ollama / LM Studio)
-- Used for:
-  - Natural language understanding
-  - Summarization
-  - Action clarification
+- Used for natural language understanding
+- Runs fully offline, no external API keys
+- Model: Mistral (via Ollama) or Phi-3 (via LM Studio)
+- Default model: Mistral for general use, Phi-3 for specialized aviation queries
 - Runs fully offline, no external API keys required
 
 ### Dust MCP Agent
@@ -70,71 +70,61 @@ Local LLM (Ollama w/ Mistral or LM Studio)
 - 🧾 Manage memberships & fractional shares
 - 📊 Analytics and reporting
 
-## 🚀 Quick Start
 
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- PostgreSQL 13+
-- [Ollama](https://ollama.ai) or LM Studio (for local LLM)
-
-### 1. Set up the Backend
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: .\venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### 2. Set up MCP Server
-```bash
-cd mcp-server
-npm install
-npm run dev
-```
-
-### 3. Start Local LLM
-```bash
-ollama run mistral
-```
-
-### 4. Start Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
 
 ## 🗂️ Project Structure
 
 ```
-/
-├── frontend/           # Next.js frontend application
-│   ├── components/     # React components
-│   ├── pages/          # Next.js pages
-│   └── styles/         # Global styles
+ai-jet-booking/
+├── frontend/                 # Next.js frontend application (Next.js 14 + TypeScript)
+│   ├── src/
+│   │   ├── app/             # App router directory
+│   │   │   ├── (auth)/      # Authentication routes
+│   │   │   ├── (dashboard)/ # Protected dashboard routes
+│   │   │   ├── api/         # API routes
+│   │   │   └── layout.tsx   # Root layout
+│   │   ├── components/      # Reusable components
+│   │   ├── lib/             # Utility functions
+│   │   └── styles/          # Global styles
+│   └── public/              # Static assets
 │
-├── backend/           # FastAPI backend
-│   ├── app/            # Application code
-│   ├── migrations/     # Database migrations
-│   └── tests/          # Backend tests
+├── backend/                # FastAPI backend
+│   ├── app/
+│   │   ├── api/           # API routes
+│   │   ├── core/           # Core configurations
+│   │   ├── models/         # Database models
+│   │   ├── schemas/        # Pydantic schemas
+│   │   └── services/       # Business logic
+│   └── tests/              # Test suite
 │
-├── mcp-server/        # Dust MCP server
-│   ├── agents/         # MCP agents
-│   └── tools/          # Custom tools
+├── mcp-server/            # MCP Server (Node.js)
+│   ├── src/
+│   │   ├── agents/        # AI agents
+│   │   │   └── ai_concierge/
+│   │   │       ├── tools/    # Agent tools
+│   │   │       └── index.ts # Agent configuration
+│   │   ├── config/         # Configuration files
+│   │   └── utils/          # Utility functions
+│   └── package.json
 │
-└── README.md          # This file
+├── jet-chat-ai/           # AI Chat Interface
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── hooks/          # Custom hooks
+│   │   └── services/       # API services
+│   └── public/             # Static assets
+│
+├── .github/               # GitHub workflows
+├── docker/                 # Docker configurations
+└── docs/                   # Documentation
 ```
+## 🎬 Example Workflow
 
-## 🤖 Sample User Flows
+1. User opens the chat interface
+2. Enters: "show my bookingsr"
+3. AI agent responds with list of jet bookings
 
-### Booking a Jet
-1. User registers and logs in
-2. Opens chat and says: "Find me a jet from Delhi to Jaipur next Friday"
-3. Agent returns fleet options
-4. User says: "Book the second one"
-5. Booking confirmation shown and added to dashboard
+## 🤖 Sample User Flows -in Progress
 
 ### Admin Workflow
 1. Admin logs in
@@ -180,147 +170,6 @@ MIT - See [LICENSE](LICENSE) for more details.
 - Natural language understanding for multi-turn conversations
 - Context-aware responses to user queries
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 18+ for frontend and MCP server
-- Python 3.8+ for backend services
-- PostgreSQL 13+ for database
-- [Ollama](https://ollama.com) or LM Studio (running `mistral` model)
-
-### 1. Start Dust MCP Server
-```bash
-cd mcp-server/
-npm install
-npm run dev
-```
-
-### 2. Start Backend
-```bash
-cd backend/
-python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-### 3. Start Frontend
-```bash
-cd jet-chat-ui/
-npm install
-npm run dev
-```
-
-## 🎬 Example Workflow
-
-1. User opens the chat interface
-2. Enters: "Book a mid-size jet from Delhi to Jaipur"
-3. AI agent responds with available options
-4. User confirms: "Yes, book it"
-5. System processes booking and displays confirmation
-6. Booking appears in user's dashboard
-
-## Project Structure
-
-```
-ai-jet-booking/
-├── frontend/                 # Next.js frontend application
-│   ├── src/
-│   │   ├── app/             # Next.js app directory (Entry Point)
-│   │   │   ├── page.tsx     # Home page
-│   │   │   ├── jets/        # Jets listing and details
-│   │   │   │   ├── page.tsx # Jets listing page
-│   │   │   │   └── [id]/    # Individual jet details
-│   │   │   │       └── page.tsx
-│   │   │   ├── bookings/    # Booking management
-│   │   │   │   └── page.tsx
-│   │   │   └── admin/       # Admin dashboard
-│   │   │       └── page.tsx
-│   │   │
-│   │   ├── components/      # React components
-│   │   │   ├── JetCard.tsx  # Jet display card
-│   │   │   ├── SearchFilters.tsx
-│   │   │   ├── BookingForm.tsx
-│   │   │   └── AdminDashboard.tsx
-│   │   │
-│   │   ├── services/        # API service functions
-│   │   │   ├── jetService.ts    # Jet-related API calls
-│   │   │   ├── bookingService.ts
-│   │   │   └── authService.ts
-│   │   │
-│   │   ├── types/          # TypeScript type definitions
-│   │   │   └── index.ts     # Shared type definitions
-│   │   │
-│   │   └── utils/          # Utility functions
-│   │       ├── api.ts       # API configuration
-│   │       └── auth.ts      # Authentication utilities
-│   │
-│   ├── public/             # Static assets
-│   │   └── images/         # Image assets
-│   │
-│   └── package.json        # Frontend dependencies
-│
-├── backend/                 # FastAPI backend application
-│   ├── main.py             # FastAPI application entry point
-│   │   ├── FastAPI app initialization
-│   │   ├── Middleware setup
-│   │   ├── Router registration
-│   │   └── Event handlers
-│   │
-│   ├── routers/            # API route handlers
-│   │   ├── jets.py         # Jet-related endpoints
-│   │   │   ├── GET /jets/          # List all jets
-│   │   │   ├── GET /jets/{id}      # Get jet details
-│   │   │   ├── POST /jets/         # Create new jet
-│   │   │   └── PUT /jets/{id}      # Update jet
-│   │   │
-│   │   ├── bookings.py     # Booking endpoints
-│   │   │   ├── GET /bookings/      # List bookings
-│   │   │   ├── POST /bookings/     # Create booking
-│   │   │   └── PUT /bookings/{id}  # Update booking
-│   │   │
-│   │   └── auth.py         # Authentication endpoints
-│   │       ├── POST /auth/login    # User login
-│   │       └── POST /auth/register # User registration
-│   │
-│   ├── models/             # Database models
-│   │   ├── jet.py          # Jet model
-│   │   │   ├── Jet class
-│   │   │   └── JetCategory class
-│   │   │
-│   │   ├── booking.py      # Booking model
-│   │   │   └── Booking class
-│   │   │
-│   │   └── user.py         # User model
-│   │       └── User class
-│   │
-│   ├── schemas.py          # Pydantic schemas
-│   │   ├── Jet schemas
-│   │   ├── Booking schemas
-│   │   └── User schemas
-│   │
-│   ├── crud.py             # Database operations
-│   │   ├── Jet CRUD operations
-│   │   ├── Booking CRUD operations
-│   │   └── User CRUD operations
-│   │
-│   ├── database.py         # Database configuration
-│   │   ├── Database connection
-│   │   └── Session management
-│   │
-│   ├── utils/              # Utility functions
-│   │   ├── auth_utils.py   # Authentication utilities
-│   │   └── logger.py       # Logging configuration
-│   │
-│   └── alembic/            # Database migrations
-│       ├── versions/       # Migration files
-│       └── env.py          # Migration environment
-│
-├── .venv/                  # Python virtual environment
-├── .vscode/               # VS Code configuration
-├── run_all.sh             # Script to run both frontend and backend
-└── README.md              # Project documentation
-```
 
 ## Application Flow
 
@@ -433,23 +282,55 @@ The application will be available at:
 
 ## Development
 
+### MCP Server Setup
+```bash
+cd mcp-server
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+
+### Jet-Chat-AI Setup
+```bash
+cd jet-chat-ai
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+
 ### Frontend Development
 ```bash
 cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-```
+
 
 ### Backend Development
 ```bash
 cd backend
-uvicorn main:app --reload
-```
 
-### Database Migrations
-```bash
-cd backend
-alembic revision --autogenerate -m "description"
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: .\venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run database migrations
 alembic upgrade head
+
+# Start development server
+uvicorn main:app --reload
 ```
 
 ## Testing
@@ -466,38 +347,6 @@ cd backend
 pytest
 ```
 
-## Deployment
-
-### Frontend Deployment
-```bash
-cd frontend
-npm run build
-```
-
-### Backend Deployment
-```bash
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [Next.js](https://nextjs.org/)
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [PostgreSQL](https://www.postgresql.org/)
 
 ## Application UI
 
@@ -509,3 +358,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### User Account
 ![User Account](.gitbook/account.png)
+
+### AI Chat - MCP
+
+#### Show Me Jet
+
+![Show Me Jet](.gitbook/showmejet.png)
+
+#### Show me my bookings
+
+![Show me my bookings](.gitbook/ai_chat.png)
