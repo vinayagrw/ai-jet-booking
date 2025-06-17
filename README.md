@@ -26,7 +26,7 @@ Dust MCP Server (Local Node.js)
 Local LLM (Ollama w/ Mistral or LM Studio)
 ```
 
-## 🤖 AI, LLM & NLP Capabilities
+## 🤖 AI, MCP, LLM & NLP Capabilities
 
 ### AI Chatbot (Frontend)
 - Embedded in the UI as a persistent chat window
